@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TextView emailTxtView = findViewById(R.id.textViewEmail);
         EditText edtDomain = findViewById(R.id.editTxtDomain);
 
+        ProgressBar lengthBar = findViewById(R.id.lengthBar);
+
+        Thread thread = new Thread(new Runnable()
+        {
+          @Override
+          public void run()
+            {
+              while (edt1stName.getText().length() + edtName.getText().length() <= 12) {
+                  lengthBar.setProgress(edt1stName.getText().length() + edtName.getText().length());
+              }
+            }
+        });
+        thread.start();
 
         switch(view.getId())
         {
