@@ -16,9 +16,11 @@
         android:hint="Enter First Name"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:contextClickable="true"
+        android:onClick="onClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <EditText
         android:id="@+id/editTxtName"
@@ -46,16 +48,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTxtName" />
 
+
     <Button
         android:id="@+id/firstButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
         android:layout_marginTop="40dp"
-        android:onClick="btnClickable"
         android:text="Submit"
-        app:layout_constraintRight_toLeftOf="@+id/secondButton"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="80dp"
+        app:layout_constraintRight_toLeftOf="@+id/secondButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTxtDomain" />
 
@@ -69,8 +71,7 @@
         app:layout_constraintLeft_toRightOf="@id/firstButton"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTxtDomain"
-        app:layout_constraintVertical_bias="0.117"
-        android:onClick="sdBtnClickable"/>
+        app:layout_constraintVertical_bias="0.117"/>
 
     <TextView
         android:id="@+id/textView1stName"

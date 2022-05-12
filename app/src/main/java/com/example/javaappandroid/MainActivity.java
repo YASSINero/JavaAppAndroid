@@ -23,20 +23,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button stBtn = findViewById(R.id.firstButton);
         Button ndBtn = findViewById(R.id.secondButton);
+
         CheckBox clearAllCheckB = findViewById(R.id.clearAllCheckB);
+
         stBtn.setOnClickListener(this);
         ndBtn.setOnClickListener(this);
+
         clearAllCheckB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if(isChecked)
                 {
-                    Toast.makeText(MainActivity.this, "checked", Toast.LENGTH_SHORT);
+                    Toast.makeText(MainActivity.this, "checked", Toast.LENGTH_SHORT).show();
                         canClearAll = true;
                 } else canClearAll = false;
             }
         });
+
     }
+
 
 
     @Override
@@ -74,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 nameTxtView.setText("Name: " + edtName.getText().toString());
 
-                if(edt1stName.getText().toString().length() + edtName.getText().toString().length() <= 12) {
+                if(edt1stName.getText().length() + edtName.getText().length() <= 12) {
                     emailTxtView.setText("Suggested Email: " + edt1stName.getText().toString() + edtName.getText().toString() + edtDomain.getText().toString());
                     Toast.makeText(this, "Email suggested", Toast.LENGTH_SHORT).show();
                 }else Toast.makeText(this, "Email too long", Toast.LENGTH_SHORT).show();
