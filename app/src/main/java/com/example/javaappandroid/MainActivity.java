@@ -2,15 +2,25 @@ package com.example.javaappandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.ImageFormat;
+import android.media.Image;
+import android.media.ImageReader;
+import android.os.storage.StorageManager;
+import android.provider.MediaStore.Images.Media;
+import android.provider.MediaStore.MediaColumns;
 import android.os.Bundle;
+import java.lang.Object;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -23,11 +33,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button stBtn = findViewById(R.id.firstButton);
         Button ndBtn = findViewById(R.id.secondButton);
+        ImageButton imgBtn = findViewById(R.id.imageBtn);
 
         CheckBox clearAllCheckB = findViewById(R.id.clearAllCheckB);
 
         stBtn.setOnClickListener(this);
         ndBtn.setOnClickListener(this);
+        imgBtn.setOnClickListener(this);
 
         clearAllCheckB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -101,12 +113,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Toast.makeText(this, "Cleared", Toast.LENGTH_SHORT).show();
                      }
                 break;
+            case R.id.imageBtn:
+Toast.makeText(this, "image BTN", Toast.LENGTH_SHORT).show();
+                break;
+
             default:
                 Toast.makeText(this, "Press one of the two Buttons", Toast.LENGTH_SHORT).show();
                 break;
         }
 
     }
+
 
 
     /*
