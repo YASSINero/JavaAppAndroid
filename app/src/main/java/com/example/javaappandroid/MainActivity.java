@@ -25,6 +25,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private boolean canClearAll;
+    private boolean worked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +93,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 nameTxtView.setText("Name: " + edtName.getText().toString());
 
                 if(edt1stName.getText().length() + edtName.getText().length() <= 12) {
+
                     emailTxtView.setText("Suggested Email: " + edt1stName.getText().toString() + edtName.getText().toString() + edtDomain.getText().toString());
                     Toast.makeText(this, "Email suggested", Toast.LENGTH_SHORT).show();
+                    worked = true;
+
                 }else Toast.makeText(this, "Email too long", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.secondButton:
@@ -106,21 +110,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     nameTxtView.setText("Name: ");
                     emailTxtView.setText("Suggested Email: ");
                     Toast.makeText(this, "All Cleared", Toast.LENGTH_SHORT).show();
+
                 }else {
                     txtView.setText("First Name: ");
                     nameTxtView.setText("Name: ");
                     emailTxtView.setText("Suggested Email: ");
                     Toast.makeText(this, "Cleared", Toast.LENGTH_SHORT).show();
-                     }
+                }
+                worked = false;
                 break;
             case R.id.imageBtn:
 Toast.makeText(this, "image BTN", Toast.LENGTH_SHORT).show();
+
                 break;
 
             default:
                 Toast.makeText(this, "Press one of the two Buttons", Toast.LENGTH_SHORT).show();
                 break;
         }
+        if(worked){
+            emailTxtView.setTextIsSelectable(true);
+        }else emailTxtView.setTextIsSelectable(false);
 
     }
 
