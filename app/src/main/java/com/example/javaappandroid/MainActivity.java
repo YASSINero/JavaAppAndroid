@@ -1,21 +1,22 @@
 package com.example.javaappandroid;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.provider.DocumentsContract;
 import android.os.Bundle;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.Object;
 import java.util.Objects;
 
-import android.content.ContentProvider;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -28,12 +29,11 @@ import android.widget.Toast;
 
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private boolean canClearAll;
     private boolean worked;
-    private static final int PICK_TXT_FILE = 1;
-    private Uri fileUri;
+    private ActivityResultLauncher activityResultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button stBtn = findViewById(R.id.firstButton);
         Button ndBtn = findViewById(R.id.secondButton);
         ImageButton imgBtn = findViewById(R.id.imageBtn);
+        TextView scrlblTxt = findViewById(R.id.scrollableTxt);
+
 
         CheckBox clearAllCheckB = findViewById(R.id.clearAllCheckB);
 
@@ -53,67 +55,70 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         clearAllCheckB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked)
-                {
+                if (isChecked) {
                     Toast.makeText(MainActivity.this, "checked", Toast.LENGTH_SHORT).show();
-                        canClearAll = true;
+                    canClearAll = true;
                 } else canClearAll = false;
             }
         });
 
+         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Uri uri = result.getData().getData();
+                    try {
+                        scrlblTxt.setText(readTextFromUri(uri));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    // Do
+                }
+            }
+        });
+
+
     }
 
-    private void openFile(Uri pickerInitialUri) {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("*/txt");
-
-
-        // Optionally, specify a URI for the file that should appear in the
-        // system file picker when it loads.
-        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri);
-
-
-        startActivityForResult(intent, PICK_TXT_FILE);
-    }
 
     private String readTextFromUri(Uri uri) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
+        Toast.makeText(MainActivity.this, "Text Reading...", Toast.LENGTH_SHORT).show();
+        System.out.println("Reading file");
         try (InputStream inputStream = getContentResolver().openInputStream(uri);
              BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(inputStream)))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 stringBuilder.append(line);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return stringBuilder.toString();
     }
 
 
-
-    @Override
+    /*@Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         super.onActivityResult(requestCode, resultCode, resultData);
 
         if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
             // The result data contains a URI for the document or directory that
             // the user selected.
-            Uri uri = null;
+            Uri fileUri = null;
             if (resultData != null) {
-                uri = resultData.getData();
+                fileUri = resultData.getData();
                 // Perform operations on the document using its URI.
                 try {
-                    readTextFromUri(uri);
+                    System.out.println("Will read file");
+                    String toBeCorrectedTXT = readTextFromUri(fileUri);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
-    }
-
-
-
-
+    }*/
 
 
     @Override
@@ -130,20 +135,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ProgressBar lengthBar = findViewById(R.id.lengthBar);
 
-        Thread thread = new Thread(new Runnable()
-        {
-          @Override
-          public void run()
-            {
-              while (edt1stName.getText().length() + edtName.getText().length() <= 12) {
-                  lengthBar.setProgress(edt1stName.getText().length() + edtName.getText().length());
-              }
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (edt1stName.getText().length() + edtName.getText().length() <= 12) {
+                    lengthBar.setProgress(edt1stName.getText().length() + edtName.getText().length());
+                }
             }
         });
         thread.start();
 
-        switch(view.getId())
-        {
+        switch (view.getId()) {
             case R.id.firstButton:
 
                 txtView.setText("First Name: " + edt1stName.getText().toString());
@@ -151,17 +153,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 nameTxtView.setText("Name: " + edtName.getText().toString());
 
-                if(edt1stName.getText().length() + edtName.getText().length() <= 12) {
+                if (edt1stName.getText().length() + edtName.getText().length() <= 12) {
 
                     emailTxtView.setText("Suggested Email: " + edt1stName.getText().toString() + edtName.getText().toString() + edtDomain.getText().toString());
                     Toast.makeText(this, "Email suggested", Toast.LENGTH_SHORT).show();
                     worked = true;
 
-                }else Toast.makeText(this, "Email too long", Toast.LENGTH_SHORT).show();
+                } else Toast.makeText(this, "Email too long", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.secondButton:
-                if(canClearAll)
-                {
+                if (canClearAll) {
                     edt1stName.setText("");
                     edtName.setText("");
                     edtDomain.setText("");
@@ -170,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     emailTxtView.setText("Suggested Email: ");
                     Toast.makeText(this, "All Cleared", Toast.LENGTH_SHORT).show();
 
-                }else {
+                } else {
                     txtView.setText("First Name: ");
                     nameTxtView.setText("Name: ");
                     emailTxtView.setText("Suggested Email: ");
@@ -179,23 +180,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 worked = false;
                 break;
             case R.id.imageBtn:
-Toast.makeText(this, "image BTN", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "image BTN", Toast.LENGTH_SHORT).show();
 
+                System.out.println("will open file");
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("*/*");
 
-                openFile(fileUri);
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    activityResultLauncher.launch(intent);
+                } else {
+                    Toast.makeText(MainActivity.this, "There is no app that support this action", Toast.LENGTH_SHORT).show();
 
-
+                }
                 break;
 
             default:
                 Toast.makeText(this, "Press one of the two Buttons", Toast.LENGTH_SHORT).show();
                 break;
         }
-        if(worked){
-            emailTxtView.setTextIsSelectable(true);
-        }else emailTxtView.setTextIsSelectable(false);
+        emailTxtView.setTextIsSelectable(worked);
+
+        }
+
+
 
     }
+
 
 
 
@@ -227,4 +238,4 @@ Toast.makeText(this, "image BTN", Toast.LENGTH_SHORT).show();
     }
 */
 
-}
+
