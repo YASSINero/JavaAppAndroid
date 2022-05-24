@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean canClearAll;
     private boolean worked;
     private ActivityResultLauncher activityResultLauncher;
+    private BracesProcess bracesProcess = new BracesProcess();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     Uri uri = result.getData().getData();
                     try {
-                        scrlblTxt.setText(readTextFromUri(uri));
+                        String toProcess = readTextFromUri(uri);
+                        scrlblTxt.setText(bracesProcess.processBrackets(toProcess));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -183,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this, "image BTN", Toast.LENGTH_SHORT).show();
 
                 System.out.println("will open file");
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.setType("*/*");
 
