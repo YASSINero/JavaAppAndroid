@@ -1,62 +1,35 @@
 package com.example.javaappandroid;
 
-import java.text.MessageFormat;
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 
 public class BracesProcess {
 
-    private char[] charsStack;
+
+    private Deque<Character> charList = new ArrayDeque<Character>();
+    private char inputChar;
 
 
-    {
-        charsStack = new char[100];
-    }
+
 
     int[] BRACKETS;
     {
         BRACKETS = new int[3];
     }
 
-    char inputChar;
-
     private final String openBrackets = "({[";
     private final String closeBrackets = ")}]";
 
-    int indexa;
     private String Result = "";
-
-    private void push(char pushed)
-    {
-        indexa++;
-        charsStack[indexa] = pushed;
-    }
-
-    private void pop()
-    {
-        charsStack[indexa] = 0;
-        indexa--;
-    }
-
-    private char top()
-    {
-        return charsStack[indexa];
-    }
-
-    private boolean stackEmpty()
-    {
-        return indexa >= 1;
-    }
-
-
-
-
-
-
 
    //Input
 
 
 
     public String processBrackets(String code) {
+
+        System.out.println(code);
 
         for(int i = 0; i<code.length(); i++)
         {
@@ -67,46 +40,81 @@ public class BracesProcess {
                 if(inputChar == openBrackets.charAt(j))
                 {
 
-                    push(openBrackets.charAt(j));
+                    charList.push(inputChar);
                     BRACKETS[j]++;
                     System.out.println("New Bracket open\n");
 
                 }
-                else if(inputChar == closeBrackets.charAt(j) && top() == openBrackets.charAt(j))
+                else if(inputChar == closeBrackets.charAt(j) && !charList.isEmpty() && charList.getLast() == openBrackets.charAt(j))
                 {
-
-                    pop();
+                    charList.pop();
                     BRACKETS[j]--;
-                    System.out.println("Bracket closed\n");
+                    System.out.println("Bracket Closed");
                 }
-                else {System.out.println("Brackets Closing in wrong order\n");}
+                else if(inputChar == closeBrackets.charAt(j) && charList.isEmpty())
+                {
+                    BRACKETS[j]++;
+                    break;
+                }
+                else {System.out.println("Will continue\n");
+                }
             }
-            for(int z=0; z < BRACKETS.length;)
-            {
 
-                    if(BRACKETS[z] == 0 && z == 0) {
-                        System.out.println("round Brackets well written\n");
-                        z++;
-                    }
-                    else if(BRACKETS[z] == 0 && z == 1){
-                        System.out.println("Curly Brackets well written\n");
-                        z++;
-                    }
-                    else if(BRACKETS[z] == 0 && z == 2){
-                        System.out.println("Square Brackets well written\n");
-                        Result ="Brackets well written";
-                        z++;
+        }
 
+        return checkBracketsSyntax();
+    }
+
+    public String checkBracketsSyntax()
+    {
+        for(int z=0; z < BRACKETS.length; z++)
+        {
+
+            switch (z) {
+                case 0:
+                    if(BRACKETS[z] > 0) {
+                        //System.out.println("Syntax Error in bracket : " + ' ' +openBrackets.charAt(z));
+                        Result += "Syntax Error in bracket : " + ' ' +openBrackets.charAt(z) + '\n';
                     }
                     else {
-                        System.out.println("Syntax Error in brackets\n");
-                        return Result = MessageFormat.format("Syntax Error in bracket : {0}\n", openBrackets.charAt(z));
+                        //System.out.println("Round Brackets well written");
+                        Result += "Round Brackets well written\n";
                     }
+                    break;
 
+                case 1:
+                    if(BRACKETS[z] > 0)	{
+                        //System.out.println("Syntax Error in bracket : " + ' ' +openBrackets.charAt(z));
+                        Result += "Syntax Error in bracket : " + ' ' +openBrackets.charAt(z) + '\n';
+                    }
+                    else {
+                        //System.out.println("Curly Brackets well written");
+                        Result += "Curly Brackets well written\n";
+                    }
+                    break;
+
+                case 2:
+                    if(BRACKETS[z] > 0)	{
+                        //System.out.println("Syntax Error in bracket : " + ' ' +openBrackets.charAt(z));
+                        Result += "Syntax Error in bracket : " + ' ' +openBrackets.charAt(z) + '\n';
+                    }
+                    else {
+                        //System.out.println("Square Brackets well written");
+                        Result += "Square Brackets well written";
+                    }
+                    break;
+                default:
+                    System.out.println("Something went wrong");
+                    break;
             }
+
+
+
         }
         return Result;
     }
+
+
           /*  for(int k= 0; k<3; k++)
             {
                 cout << BRACKETS[k] << "\n";

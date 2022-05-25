@@ -12,7 +12,7 @@
         android:id="@+id/editTxtFirstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="60dp"
         android:ems="10"
         android:hint="Enter First Name"
         android:inputType="textPersonName"
@@ -99,7 +99,7 @@
         style="@style/Widget.AppCompat.TextView.SpinnerItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="35dp"
         android:fontFamily="sans-serif-black"
         android:text="Suggested Email"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -131,6 +131,17 @@
         app:layout_constraintBottom_toTopOf="@id/editTxtDomain"
         android:max="12"/>
 
+    <TextView
+        android:id="@+id/scrollableTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Waiting for text..."
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@id/textViewEmail"
+        app:layout_constraintBottom_toTopOf="@id/imageBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <ImageButton
         android:id="@+id/imageBtn"
         android:layout_width="120dp"
@@ -139,21 +150,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewEmail"
+        app:layout_constraintTop_toBottomOf="@+id/scrollableTxt"
         app:srcCompat="@android:drawable/sym_contact_card" />
 
 
-        <TextView
-            android:id="@+id/scrollableTxt"
-            android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:text="Waiting for text..."
-            android:textColor="@color/material_dynamic_neutral10"
-            android:scrollbars="vertical"
-            app:layout_constraintTop_toBottomOf="@id/textViewEmail"
-            app:layout_constraintBottom_toTopOf="@id/imageBtn"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+
 
 
 
