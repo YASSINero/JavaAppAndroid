@@ -23,6 +23,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,28 +35,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean worked;
     private ActivityResultLauncher activityResultLauncher;
     private BracesProcess bracesProcess = new BracesProcess();
+    private TextView ProcessTxt;
+    private TextView resultTxt;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
-        TextView ProcessTxt = findViewById(R.id.txtFile);
-        TextView resultTxt = findViewById(R.id.resultTxt);
 
         Button stBtn = findViewById(R.id.firstButton);
         Button ndBtn = findViewById(R.id.secondButton);
-        Button homeBtn = findViewById(R.id.homeBtn);
         Button ProcessBtn = findViewById(R.id.ProcessBtn);
-
-        ImageButton imgBtn = findViewById(R.id.imageBtn);
 
         CheckBox clearAllCheckB = findViewById(R.id.clearAllCheckB);
 
         stBtn.setOnClickListener(this);
         ndBtn.setOnClickListener(this);
-        imgBtn.setOnClickListener(this);
-        homeBtn.setOnClickListener(this);
         ProcessBtn.setOnClickListener(this);
 
         clearAllCheckB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -68,7 +66,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+            ProcessTxt = findViewById(R.id.txtFile);
+            resultTxt = findViewById(R.id.resultTxt);
+
+        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
@@ -85,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
+
 
 
     }
@@ -127,6 +138,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }*/
+
+    public void goToMainMenu(View view) {
+
+        setContentView(R.layout.activity_main);
+
+    }
+
+
+    public void exploreFiles(View view) {
+
+
+        Toast.makeText(this, "image BTN", Toast.LENGTH_SHORT).show();
+
+        System.out.println("will open file");
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            activityResultLauncher.launch(intent);
+        } else {
+            Toast.makeText(MainActivity.this, "There is no app that support this action", Toast.LENGTH_SHORT).show();
+
+        }
+
+
+    }
 
 
     @Override
@@ -187,28 +225,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 worked = false;
                 break;
-            case R.id.imageBtn:
-                Toast.makeText(this, "image BTN", Toast.LENGTH_SHORT).show();
 
-                System.out.println("will open file");
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("*/*");
-
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    activityResultLauncher.launch(intent);
-                } else {
-                    Toast.makeText(MainActivity.this, "There is no app that support this action", Toast.LENGTH_SHORT).show();
-
-                }
-                break;
             case R.id.ProcessBtn:
                 setContentView(R.layout.activity_second);
 
-                break;
-
-            case R.id.homeBtn:
-                setContentView(R.layout.activity_main);
                 break;
 
             default:
