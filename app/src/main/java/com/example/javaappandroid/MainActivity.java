@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -41,17 +40,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        TextView ProcessTxt = findViewById(R.id.txtFile);
+        TextView resultTxt = findViewById(R.id.resultTxt);
+
         Button stBtn = findViewById(R.id.firstButton);
         Button ndBtn = findViewById(R.id.secondButton);
-        ImageButton imgBtn = findViewById(R.id.imageBtn);
-        TextView scrlblTxt = findViewById(R.id.scrollableTxt);
+        Button homeBtn = findViewById(R.id.homeBtn);
+        Button ProcessBtn = findViewById(R.id.ProcessBtn);
 
+        ImageButton imgBtn = findViewById(R.id.imageBtn);
 
         CheckBox clearAllCheckB = findViewById(R.id.clearAllCheckB);
 
         stBtn.setOnClickListener(this);
         ndBtn.setOnClickListener(this);
         imgBtn.setOnClickListener(this);
+        homeBtn.setOnClickListener(this);
+        ProcessBtn.setOnClickListener(this);
 
         clearAllCheckB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -70,7 +75,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Uri uri = result.getData().getData();
                     try {
                         String toProcess = readTextFromUri(uri);
-                        scrlblTxt.setText(bracesProcess.processBrackets(toProcess));
+                        ProcessTxt.setText(toProcess);
+                        resultTxt.setText(bracesProcess.processBrackets(toProcess));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -195,6 +201,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Toast.makeText(MainActivity.this, "There is no app that support this action", Toast.LENGTH_SHORT).show();
 
                 }
+                break;
+            case R.id.ProcessBtn:
+                setContentView(R.layout.activity_second);
+
+                break;
+
+            case R.id.homeBtn:
+                setContentView(R.layout.activity_main);
                 break;
 
             default:

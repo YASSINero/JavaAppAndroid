@@ -115,29 +115,6 @@ public class BracesProcess {
     }
 
 
-          /*  for(int k= 0; k<3; k++)
-            {
-                cout << BRACKETS[k] << "\n";
-            }
-
-            for(int l = 0; l < 10; l++)
-            {
-                cout << charsStack[l]<< "\n";
-            }*/
-
-
-
-//	for(int k = 0; k<sizeof(charsStack); k++)
-//					{
-//						for(int l = k; l>0; l--)
-//						{
-//							if((charsStack[k] == ')' || charsStack[k] == '}' || charsStack[k] == ']') && charsStack[l] != charsStack[k])
-//							{
-//								cout << "Bracket Closed \n";
-//							}
-//						}
-//					}
-
 
 
 

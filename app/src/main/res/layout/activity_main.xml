@@ -12,7 +12,7 @@
         android:id="@+id/editTxtFirstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="95dp"
         android:ems="10"
         android:hint="Enter First Name"
         android:inputType="textPersonName"
@@ -131,30 +131,21 @@
         app:layout_constraintBottom_toTopOf="@id/editTxtDomain"
         android:max="12"/>
 
-    <TextView
-        android:id="@+id/scrollableTxt"
+    <Button
+        android:id="@+id/ProcessBtn"
+        android:onClick="onClick"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Waiting for text..."
-        android:scrollbars="vertical"
-        app:layout_constraintTop_toBottomOf="@id/textViewEmail"
-        app:layout_constraintBottom_toTopOf="@id/imageBtn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <ImageButton
-        android:id="@+id/imageBtn"
-        android:layout_width="120dp"
-        android:layout_height="48dp"
-        android:onClick="onClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollableTxt"
-        app:srcCompat="@android:drawable/sym_contact_card" />
+        app:layout_constraintTop_toBottomOf="@id/textViewEmail"
 
 
-
+        android:background="@color/transparent"
+        android:text="Brackets Process"
+        android:textColor="@color/purple_700"/>
 
 
 
